@@ -1,5 +1,7 @@
 package mk.ukim.finki.wp.lab.web;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name="movieList_servlet",urlPatterns = "")
@@ -24,6 +27,13 @@ public class MovieListServlet extends HttpServlet {
     public MovieListServlet(MovieService movieService,SpringTemplateEngine springTemplateEngine) {
         this.movieService = movieService;
         this.springTemplateEngine=springTemplateEngine;
+    }
+    private List<TicketOrder> orders;
+
+    @Override
+    public void init() throws ServletException {
+        orders = new ArrayList<>();
+        getServletContext().setAttribute("orders", orders);
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
@@ -58,8 +68,7 @@ public class MovieListServlet extends HttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
-    {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         String type=req.getParameter("formType");
         if(type.equals("form1")){
@@ -72,10 +81,22 @@ public class MovieListServlet extends HttpServlet {
         {
             String title=req.getParameter("movie");
             String tickets=req.getParameter("numTickets");
-            req.getSession(true).setAttribute("movie",title);
-            req.getSession(true).setAttribute("numTickets",tickets);
+            String name =req.getParameter("name");
+            String addr= req.getRemoteAddr();
+            TicketOrder ticketOrder=new TicketOrder(title,name,addr,Long.parseLong(tickets));
+            req.getSession(true).setAttribute("ticketOrder",ticketOrder);
+            orders.add(ticketOrder);
+
+            ServletContext servletContext = getServletContext();
+            servletContext.setAttribute("orders", orders);
+
             resp.sendRedirect("/ticketOrder");
+
         }
+
 
     }
 }
+//req.setAttribute("orders",orders);
+//        RequestDispatcher rd = req.getRequestDispatcher("/users");
+//        rd.forward(req,resp);

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>users</title>
+</head>
+<body>
+
+<form th:action="@{/users}" th:method="post">
+    <select >
+        <option th:each="order : ${orders}" th:text="${order.getClientName()}"></option>
+
+    </select>
+    <button type="submit" text="show movies"></button>
+
+</form>
+
+</body>
+</html>

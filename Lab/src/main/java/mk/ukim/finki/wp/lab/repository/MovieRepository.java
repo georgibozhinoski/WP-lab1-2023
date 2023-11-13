@@ -2,28 +2,29 @@ package mk.ukim.finki.wp.lab.repository;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Movie;
+import mk.ukim.finki.wp.lab.model.Production;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 @Component
 public class MovieRepository {
-    public static List<Movie> movies;
-@PostConstruct
-    public void init() {
-    movies=new ArrayList<>();
-        movies.add(new Movie("Movie1", "summary1", 1));
-        movies.add(new Movie("Movie2", "summary2", 2));
-        movies.add(new Movie("Movie3", "summary3", 3));
-        movies.add(new Movie("Movie4", "summary4", 4));
-        movies.add(new Movie("Movie5", "summary5", 5));
-        movies.add(new Movie("Movie6", "summary6", 6));
-        movies.add(new Movie("Movie7", "summary7", 7));
-        movies.add(new Movie("Movie8", "summary8", 8));
-        movies.add(new Movie("Movie9", "summary9", 9));
-        movies.add(new Movie("Movie10", "summary10", 10));
+
+
+
+    public List<Movie> movies;
+    public MovieRepository(ProductionRepository productionRepository) {
+        movies = new ArrayList<>();
+        movies.add(new Movie("The Shawshank Redemption", "Drama",  9.3,productionRepository.findAll().get(0)));
+        movies.add(new Movie("The Godfather: Part II", "Crime",  9.0,productionRepository.findAll().get(1)));
+        movies.add(new Movie("Avengers: End Game", "Sci-fi",  9.9,productionRepository.findAll().get(2)));
+        movies.add(new Movie("SuperMan", "Hero",  8.9, productionRepository.findAll().get(3)));
+        movies.add(new Movie("Spider-Man", "Hero",  10.0, productionRepository.findAll().get(4)));
+
     }
 
     public List<Movie> findAll()
@@ -37,5 +38,32 @@ public class MovieRepository {
            movieList= movies.stream().filter(movie -> (movie.getTitle().contains(text) || movie.getSummary().contains(text)) && movie.getRating()>=rating).toList();
 
             return movieList;
+    }
+    public Optional<Movie> findById(Long id) {
+        return movies.stream()
+                .filter(movie -> movie.getId().equals(id)).findFirst();
+    }
+    public void deleteById(Long id) {
+        movies.removeIf(movie -> movie.getId().equals(id));
+    }
+
+    public Optional<Movie> save(String title, String summary, double rating, Production production) {
+        if( production==null)
+            throw new RuntimeException("Production not found");
+        Movie movie = new Movie(title,summary,rating,production);
+        movies.add(movie);
+        return Optional.of(movie);
+    }
+    public void update(Long id, String title, String summary, double rating, Production production) {
+        Optional<Movie> optionalMovie = findById(id);
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            movie.setTitle(title);
+            movie.setSummary(summary);
+            movie.setRating(rating);
+            movie.setProduction(production);
+        } else {
+            throw new RuntimeException("Movie not found with id: " + id);
+        }
     }
 }

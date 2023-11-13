@@ -24,20 +24,29 @@
         <input type="submit" value="Search">
     </form>
     <h2>Choose a movie:</h2>
-    <form th:action="@{/}" th:method="post">
+    <form th:action="@{/ticketOrder}" th:method="post">
         <input type="hidden" name="formType" value="form2">
         <div th:each="movie : ${movies}">
-            <input name="movie" type="radio" th:value="${movie.getTitle()}" th:id="${movie.getTitle()}">
-            <label th:for="${movie.getTitle()}" th:text="'Title: '+${movie.getTitle()}+', Summary: '+ ${movie.getSummary()}+ ', Rating: ' + ${movie.getRating()} ">
-            </label>
+            <input name="selectedMovie" type="radio" th:value="${movie.getTitle()}" th:id="${movie.getTitle()}">
+            <label th:for="${movie.getTitle()}" th:text="'Title: '+${movie.getTitle()}+', Summary: '+ ${movie.getSummary()}+ ', Rating: ' + ${movie.getRating()}
+             + ', Production: '+ ${movie.getProduction().name} "> </label>
+                <a th:href="@{/movies/delete/{id} (id=${movie.getId()})}" class="btn btn-sm btn-danger delete-movie">
+                <i class="fa fa-trash">Delete</i></a>
+            <a th:href="@{/movies/edit-form/{id} (id=${movie.getId()})}" class="btn btn-sm btn-info edit-movie"><i class="fa fa-edit">Edit</i> </a>
         </div>
         <br>
 
-        Enter your name: <input type="text" name="name" required><br/><br/>
+       <label for="name">Enter your name:</label> <input id="name" type="text" name="name" required>
         <h2>Choose number of tickets:</h2>
         <input type="number" name="numTickets" min="1" max="10" required><br/><br/>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Order">
     </form>
+    <h1 th:text="(${hasError}== true ? ${error}: '')"></h1>
+    <div>
+        <a th:href="@{/movies/add-form}" class="btn btn-sm btn-success">
+            <i class="fa fa-plus">Add new movie</i>
+        </a>
+    </div>
 </main>
 </body>
 </html>

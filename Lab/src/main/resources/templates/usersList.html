@@ -8,8 +8,8 @@
 
 <form th:action="@{/users}" th:method="post">
     <select >
-        <option th:each="order : ${orders}" th:text="${order.getClientName()}"></option>
-
+<!--        <option th:each="order : ${order}" th:text="${order.getClientName()}"></option>-->
+            <option th:text="${order.getClientName()}"></option>
     </select>
     <button type="submit" text="show movies"></button>
 

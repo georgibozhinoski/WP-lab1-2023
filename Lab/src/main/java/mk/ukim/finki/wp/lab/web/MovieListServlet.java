@@ -81,9 +81,9 @@ public class MovieListServlet extends HttpServlet {
         {
             String title=req.getParameter("movie");
             String tickets=req.getParameter("numTickets");
-            String name =req.getParameter("name");
-            String addr= req.getRemoteAddr();
-            TicketOrder ticketOrder=new TicketOrder(title,name,addr,Long.parseLong(tickets));
+//            String name =req.getParameter("name");
+//            String addr= req.getRemoteAddr();
+            TicketOrder ticketOrder=new TicketOrder(title,Long.parseLong(tickets));
             req.getSession(true).setAttribute("ticketOrder",ticketOrder);
             orders.add(ticketOrder);
 

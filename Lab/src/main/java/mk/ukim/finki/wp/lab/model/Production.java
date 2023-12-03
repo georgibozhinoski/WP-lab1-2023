@@ -1,9 +1,15 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
+@Entity
 public class Production {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String country;
@@ -13,5 +19,9 @@ public class Production {
         this.name = name;
         this.country = country;
         this.address = address;
+    }
+
+    public Production() {
+
     }
 }

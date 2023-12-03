@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class TicketOrderServiceImpl implements TicketOrderService {
     @Override
     public TicketOrder placeOrder(String movieTitle, String clientName, String address, int numberOfTickets) {
-        return new TicketOrder(movieTitle,clientName,address,(long) numberOfTickets);
+        return new TicketOrder(movieTitle,(long) numberOfTickets);
     }
 }

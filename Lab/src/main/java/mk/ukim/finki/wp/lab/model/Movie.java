@@ -1,14 +1,21 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-
+@Entity
 public class Movie {
+    @Id
+    @GeneratedValue
     private Long id;
     String title;
     String summary;
     double rating;
+    @ManyToOne
     private Production production;
 
 
@@ -19,5 +26,8 @@ public class Movie {
         this.rating = rating;
         this.production=production;
     }
-    
+
+    public Movie() {
+
+    }
 }

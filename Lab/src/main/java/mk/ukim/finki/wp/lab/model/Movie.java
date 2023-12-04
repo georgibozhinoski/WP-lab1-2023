@@ -19,8 +19,8 @@ public class Movie {
     private Production production;
 
 
-    public Movie(String title, String summary, double rating, Production production) {
-        this.id=(long) (Math.random()*1000);
+    public Movie( String title, String summary, double rating, Production production) {
+        this.id=id;
         this.title = title;
         this.summary = summary;
         this.rating = rating;

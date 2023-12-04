@@ -21,8 +21,8 @@ public class ProductionServiceImpl  implements ProductionService {
     }
 
     @Override
-    public Optional<Production> findByID(Long id) {
-        return productionRepository.findByID(id);
+    public Optional<Production> findById(Long id) {
+        return productionRepository.findById(id);
     }
 
 }

@@ -6,13 +6,11 @@
 </head>
 <body>
 
-<form th:action="@{/users}" th:method="post">
-    <select >
-<!--        <option th:each="order : ${order}" th:text="${order.getClientName()}"></option>-->
-            <option th:text="${order.getClientName()}"></option>
+<form th:action="@{/show-movies}" th:method="post">
+    <select th:each="user : ${users}">
+        <option th:text="${user.getName()}" th:value="${user.getId()}"></option>
     </select>
-    <button type="submit" text="show movies"></button>
-
+    <button type="submit" >Show movies</button>
 </form>
 
 </body>

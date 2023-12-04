@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td><b>Client Name </b></td>
-            <td th:text="${name}"></td>
+            <td th:text="${name.getName()}"></td>
         </tr>
         <tr>
             <td><b>Client IP Address</b></td>
@@ -44,12 +44,17 @@
             <td><b>Number of tickets</b></td>
             <td th:text="${numTickets}">2</td>
         </tr>
+        <tr>
+            <td><b>Date of creation</b></td>
+            <td th:text="${dateCreation}"></td>
+        </tr>
     </table>
         <form method="post" th:action="@{/ticketOrder/editOrder}">
             <input type="hidden" name="name" th:value="${name}" />
             <input type="hidden" name="address" th:value="${address}" />
             <input type="hidden" name="selectedMovie" th:value="${selectedMovie}" />
             <input type="hidden" name="numTickets" th:value="${numTickets}" />
+            <input type="hidden" name="dateCreation" th:value="${dateCreation}" />
 
             <button value="orderedit" type="submit">Edit</button>
 

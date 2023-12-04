@@ -2,8 +2,10 @@ package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Movie;
 import mk.ukim.finki.wp.lab.model.Production;
+import mk.ukim.finki.wp.lab.model.User;
 import mk.ukim.finki.wp.lab.service.MovieService;
 import mk.ukim.finki.wp.lab.service.ProductionService;
+import mk.ukim.finki.wp.lab.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,12 @@ import java.util.List;
 public class MovieController {
     private final ProductionService productionService;
     private final MovieService movieService;
-    public MovieController(ProductionService productionService, MovieService movieService){
+    private final UserService userService;
+
+    public MovieController(ProductionService productionService, MovieService movieService, UserService userService){
         this.productionService=productionService;
         this.movieService=movieService;
+        this.userService = userService;
     }
     @GetMapping
     public String getMoviePage(@RequestParam(required = false) String error, Model model) {
@@ -25,7 +30,8 @@ public class MovieController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-
+        List<User> users = this.userService.listAll();
+        model.addAttribute("users", users);
         List<Movie> movies = this.movieService.listAll();
         model.addAttribute("movies", movies);
         return "listMovies";

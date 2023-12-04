@@ -1,8 +1,6 @@
 package mk.ukim.finki.wp.lab.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,13 +10,16 @@ public class TicketOrder {
     @GeneratedValue
     private int id;
     private String movieTitle;
-
+    @ManyToOne
+    private  ShoppingCart shoppingCart;
    private Long numberOfTickets;
 
-    public TicketOrder(String movieTitle, Long numberOfTickets) {
-        this.movieTitle = movieTitle;
 
+
+    public TicketOrder(String movieTitle, Long numberOfTickets, ShoppingCart shoppingCart) {
+        this.movieTitle = movieTitle;
         this.numberOfTickets = numberOfTickets;
+        this.shoppingCart=shoppingCart;
     }
 
     public TicketOrder() {

@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Movie;
 import mk.ukim.finki.wp.lab.model.Production;
+import mk.ukim.finki.wp.lab.model.User;
 import mk.ukim.finki.wp.lab.repository.MovieRepository;
 import mk.ukim.finki.wp.lab.repository.ProductionRepository;
 import mk.ukim.finki.wp.lab.service.MovieService;
@@ -27,8 +28,8 @@ final private ProductionRepository productionRepository;
     }
 
     @Override
-    public List<Movie> searchMovies(String text,double rating) {
-      return movieRepository.searchMovies(text,rating);
+    public List<Movie> searchMovies(String text) {
+      return movieRepository.searchAllMoviesByTitle(text);
     }
 
     @Override
@@ -42,18 +43,29 @@ final private ProductionRepository productionRepository;
     }
 
 
+
+
     @Override
-    public Optional<Movie> save(String title, String summary, double rating, Long production) {
-        Production p= this.productionRepository.findByID(production).orElseThrow(()->new RuntimeException("Production not found"));
-        return this.movieRepository.save(title,summary,rating,p);
+    public void save(String title, String summary, double rating, Long production) {
+        Production p= this.productionRepository.findById(production).orElseThrow(()->new RuntimeException("Production not found"));
+        Movie m= new Movie(title,summary,rating,p);
+        this.movieRepository.save(m);
     }
 
     @Override
     public void update(Long id, String title, String summary, double rating, Long productionId) {
-        Production production = productionRepository.findByID(productionId)
+        Production production = productionRepository.findById(productionId)
                 .orElseThrow(() -> new RuntimeException("Production not found"));
+        Movie existingMovie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        movieRepository.update(id, title, summary, rating, production);
+        existingMovie.setTitle(title);
+        existingMovie.setSummary(summary);
+        existingMovie.setRating(rating);
+        existingMovie.setProduction(production);
+
+        movieRepository.save(existingMovie);
+
     }
 }
 

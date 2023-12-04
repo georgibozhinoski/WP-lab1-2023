@@ -36,9 +36,14 @@
         </div>
         <br>
 
-       <label for="name">Enter your name:</label> <input id="name" type="text" name="name" required>
+       <label for="name">Choose User </label>
+        <select id="name" name="name" th:each="user : ${users}">
+            <option th:text="${user.getName()}" th:value="${user.getId()}"></option>
+        </select>
+<!--        <input id="name" type="text" name="name" required>-->
         <h2>Choose number of tickets:</h2>
         <input type="number" name="numTickets" min="1" max="10" required><br/><br/>
+        <input type="datetime-local" name="dateCreation"/>
         <input type="submit" value="Order">
     </form>
     <h1 th:text="(${hasError}== true ? ${error}: '')"></h1>
